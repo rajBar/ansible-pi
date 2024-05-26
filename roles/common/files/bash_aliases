@@ -1,0 +1,33 @@
+alias shortcuts="cat ~/.bash_aliases"
+alias addshortcut="vi ~/.bash_aliases"
+
+alias master="echo 'git stash; git checkout master; git pull'; git stash; git checkout master; git pull"
+alias gitBranchClean="echo 'git branch | grep -v master | xargs git branch -D '; git branch | grep -v 'master' | xargs git branch -D"
+alias newbranch="echo 'git checkout -b <branchName>'"
+alias commitpush="echo 'git commit -am <messsage>; git push'"
+alias commitnewpush="echo 'git commit -am <variable-2>; git push -u origin <variable-1>'"
+alias commitnewbranch="echo 'git checkout -b <variable-1>; git commit -am <variable-2>; git push -u origin <variable-1>'"
+
+newBranch() {
+	echo 'git checkout -b <branchName>'
+	git checkout -b $1
+}
+
+commitPush() {
+	echo 'git commit -am <messsage>; git push'
+	git commit -am "$1"
+	git push
+}
+
+commitNewPush() {
+	echo 'git commit -am <variable-2>; git push -u origin <variable-1>'
+	git commit -am "$2"
+	git push -u origin $1
+}
+
+commitNewBranch() {
+	echo 'git checkout -b <variable-1>; git commit -am <variable-2> git push -u origin <variable-1>'
+	git checkout -b $1
+	git commit -am "$2"
+	git push -u origin $1
+}

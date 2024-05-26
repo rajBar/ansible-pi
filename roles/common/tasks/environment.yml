@@ -1,0 +1,25 @@
+- name: "Set static ip"
+  become: true
+  ansible.builtin.shell: |
+    "VAR=$(nmcli -g name connection show | head -1)"
+    "sudo nmcli c mod '$VAR' ipv4.addresses {{ host_ip }}/24 ipv4.method manual"
+    "sudo nmcli con mod '$VAR' ipv4.gateway {{ router_ip }}"
+    "sudo nmcli con mod '$VAR' ipv4.dns {{ router_ip }}"
+    "sudo nmcli c down '$VAR' && sudo nmcli c up '$VAR'"
+
+- name: Setup alternate SSH port
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Port"
+    line: "Port {{ ssh_port }}"
+  notify: "Restart sshd"
+
+- name: Generate ssh key pair
+  openssh_keypair:
+    path: "/home/{{ user }}/.ssh"
+    type: "ecdsa"
+
+- name: "Copy Aliases"
+  copy:
+    src: "bash_aliases"
+    dest: "/home/{{ user }}/.bash_aliases"

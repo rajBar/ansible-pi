@@ -1,0 +1,6 @@
+---
+# vars file for roles/common
+user:
+host_ip:
+router_ip:
+ssh_port:
